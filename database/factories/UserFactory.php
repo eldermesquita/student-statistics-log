@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Laravel\Jetstream\Role;
 
 class UserFactory extends Factory
 {
@@ -28,6 +29,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'role' => User::ROLE_GUEST
         ];
     }
 
@@ -41,6 +43,33 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    public function admin(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+           return [
+               'role' => User::ROLE_ADMIN
+           ];
+        });
+    }
+
+    public function teacher(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => User::ROLE_TEACHER
+            ];
+        });
+    }
+
+    public function guest(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => User::ROLE_TEACHER
             ];
         });
     }
