@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_GUEST;
     }
+
+    public function isSchoolWorker(): bool
+    {
+        return $this->isAdmin() || $this->isTeacher();
+    }
 }

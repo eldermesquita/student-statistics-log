@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\TestsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,3 +35,9 @@ Route::resource('courses', CoursesController::class)->only('index');
 Route::resource('courses', CoursesController::class)->only([
     'create', 'store', 'edit', 'update', 'destroy'
 ])->middleware('can:manage-courses');
+
+Route::resource('tests', TestsController::class)->only('index');
+
+Route::resource('tests', TestsController::class)->only([
+    'create', 'store', 'edit', 'update', 'destroy'
+])->middleware('can:manage-tests');
