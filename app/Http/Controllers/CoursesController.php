@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use App\Services\CourseService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,8 +22,6 @@ class CoursesController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
      * @return Response
      */
     public function index()
@@ -31,30 +30,23 @@ class CoursesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
      * @return Response
      */
-    public function create()
+    public function create(): Response
     {
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function store(CourseRequest $request)
+    public function store(CourseRequest $request): RedirectResponse
     {
         $this->service->create($request);
-
         return redirect()->route('courses.index');
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
      * @param Course $course
      * @return Response
      */
@@ -63,33 +55,23 @@ class CoursesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
+     * @param CourseRequest $request
      * @param Course $course
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function update(CourseRequest $request, Course $course)
+    public function update(CourseRequest $request, Course $course): RedirectResponse
     {
         $this->service->edit($course->id, $request);
-
         return redirect()->route('courses.index');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Course $course
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(Course $course)
+    public function destroy(Course $course): RedirectResponse
     {
         $this->service->remove($course->id);
-
         return redirect()->route('courses.index');
-    }
-
-    private function checkManageAccess() {
-        $this->authorize('manage-courses');
     }
 }

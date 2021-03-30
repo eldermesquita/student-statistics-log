@@ -52,15 +52,21 @@ class ManageTest extends TestCase
 
     public function test_user_without_permissions_cant_manage_course()
     {
-        $data = $this->validData();
+        $course = Course::factory()->create();
 
         $guest = User::factory()->guest()->create();
 
         $this->actingAs($guest)
-            ->post('/courses', $data)
+            ->post('/courses', [])
             ->assertForbidden();
 
-        $this->assertDatabaseMissing('courses', $data);
+        $this->actingAs($guest)
+            ->patch('/courses/' . $course->id, [])
+            ->assertForbidden();
+
+        $this->actingAs($guest)
+            ->delete('/courses/' . $course->id)
+            ->assertForbidden();
     }
 
     private function validData(): array
