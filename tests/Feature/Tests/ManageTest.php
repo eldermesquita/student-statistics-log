@@ -53,8 +53,6 @@ class ManageTest extends TestCase
 
     public function test_admin_can_delete_test()
     {
-        $updData = $this->validData();
-
         $test = Test::factory()->create();
 
         $admin = User::factory()->admin()->create();
