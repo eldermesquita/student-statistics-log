@@ -29,6 +29,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
+        'patronymic',
         'email',
         'password',
         'role'
@@ -62,7 +64,18 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'abbreviated_name'
     ];
+
+    public function getAbbreviatedNameAttribute()
+    {
+        return "{$this->surname} {$this->name} {$this->patronymic}";
+    }
+
+    public function session()
+    {
+        return $this->hasOne(Session::class);
+    }
 
     public function isAdmin(): bool
     {

@@ -1,5 +1,5 @@
 <template>
-    <jet-form-section @submitted="updateProfileInformation">
+<!--    <jet-form-section @submitted="updateProfileInformation">
         <template #title>
             Profile Information
         </template>
@@ -9,21 +9,21 @@
         </template>
 
         <template #form>
-            <!-- Profile Photo -->
+            &lt;!&ndash; Profile Photo &ndash;&gt;
             <div class="col-span-6 sm:col-span-4" v-if="$page.props.jetstream.managesProfilePhotos">
-                <!-- Profile Photo File Input -->
+                &lt;!&ndash; Profile Photo File Input &ndash;&gt;
                 <input type="file" class="hidden"
                             ref="photo"
                             @change="updatePhotoPreview">
 
                 <jet-label for="photo" value="Photo" />
 
-                <!-- Current Profile Photo -->
+                &lt;!&ndash; Current Profile Photo &ndash;&gt;
                 <div class="mt-2" v-show="! photoPreview">
                     <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
                 </div>
 
-                <!-- New Profile Photo Preview -->
+                &lt;!&ndash; New Profile Photo Preview &ndash;&gt;
                 <div class="mt-2" v-show="photoPreview">
                     <span class="block rounded-full w-20 h-20"
                           :style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
@@ -41,14 +41,14 @@
                 <jet-input-error :message="form.errors.photo" class="mt-2" />
             </div>
 
-            <!-- Name -->
+            &lt;!&ndash; Name &ndash;&gt;
             <div class="col-span-6 sm:col-span-4">
                 <jet-label for="name" value="Name" />
                 <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
                 <jet-input-error :message="form.errors.name" class="mt-2" />
             </div>
 
-            <!-- Email -->
+            &lt;!&ndash; Email &ndash;&gt;
             <div class="col-span-6 sm:col-span-4">
                 <jet-label for="email" value="Email" />
                 <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
@@ -65,7 +65,7 @@
                 Save
             </jet-button>
         </template>
-    </jet-form-section>
+    </jet-form-section>-->
 </template>
 
 <script>

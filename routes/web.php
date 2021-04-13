@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\TestsController;
+use App\Http\Controllers\Users\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -41,3 +42,5 @@ Route::resource('tests', TestsController::class)->only('index');
 Route::resource('tests', TestsController::class)->only([
     'create', 'store', 'edit', 'update', 'destroy'
 ])->middleware('can:manage-tests');
+
+Route::resource('users', UsersController::class)->only('index');
