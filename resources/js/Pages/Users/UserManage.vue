@@ -1,7 +1,15 @@
 <template>
-    <app-layout>
+    <app-layout title="Пользователи">
         <v-card>
-            <v-card-subtitle class="font-weight-medium">Панель управления пользователями</v-card-subtitle>
+            <v-card-title>Панель управления пользователями</v-card-title>
+            <v-card-text>
+                <span v-if="can.manageUsers">
+                    Для смены роли пользователя нажмите на его роль, после чего появится диалоговое окно.
+                </span>
+                <span v-else>
+                    Смена роли пользователей доступна только администраторам.
+                </span>
+            </v-card-text>
         </v-card>
         <v-data-table
             :headers="headers"
@@ -20,33 +28,31 @@
             }"
         >
             <template v-slot:item.role="{ item }">
-                <RoleChip :role="item.role"></RoleChip>
+                <div @click="can.manageUsers ? openModal(item.id, item.role) : false">
+                    <RoleChip :key="item.role" :role="item.role"></RoleChip>
+                </div>
             </template>
         </v-data-table>
+        <ChangeRoleDialog :roles="roles"></ChangeRoleDialog>
     </app-layout>
 </template>
 
 <script>
 import AppLayout from '@/Layouts/AppLayout'
-import RoleChip from "./RoleChip";
+import RoleChip from "../Shared/Users/RoleChip";
+import ChangeRoleDialog from "../Shared/Users/ChangeRoleDialog";
+import { EventBus } from "@/event-bus.js";
 
 export default {
     props: [
         'users',
+        'roles',
+        'can'
     ],
     components: {
+        ChangeRoleDialog,
         RoleChip,
         AppLayout
-    },
-    methods: {
-        changePage(pagination) {
-            this.loading = true;
-            this.$inertia.get(route('users.index'), {
-                page: pagination
-            }, {
-                onSuccess: () => this.loading = false
-            })
-        }
     },
     data () {
         return {
@@ -79,6 +85,22 @@ export default {
                 }
             ]
         }
+    },
+    methods: {
+        changePage(pagination) {
+            this.loading = true;
+            this.$inertia.get(route('users.index'), {
+                page: pagination
+            }, {
+                onSuccess: () => this.loading = false
+            })
+        },
+        openModal (id, role) {
+            EventBus.$emit('openModalChangeRoleDialog', {
+                userId: id,
+                currentRole: role
+            })
+        },
     }
 }
 </script>

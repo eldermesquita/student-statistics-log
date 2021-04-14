@@ -12,9 +12,11 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::with('session')->paginate(10);
+        $roles = User::getRoles();
 
         return Inertia::render('Users/UserManage', [
-            'users' => new UserCollection($users)
+            'users' => new UserCollection($users),
+            'roles' => $roles
         ]);
     }
 }

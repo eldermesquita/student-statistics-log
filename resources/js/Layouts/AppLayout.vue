@@ -1,5 +1,6 @@
 <template>
     <v-app id="inspire">
+        <Notification></Notification>
         <v-navigation-drawer
             v-model="drawer"
             app
@@ -36,16 +37,27 @@
                         <v-list-item-title>Пользователи</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item
+                    link
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-notebook-outline</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>Учебные предметы</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
 
-        <v-app-bar app>
+        <v-app-bar app color="white">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-toolbar-title>Журнал АКР</v-toolbar-title>
             <v-spacer></v-spacer>
             <div class="mr-5">
-                <RoleChip :role="$page.props.user.role"></RoleChip>
+                <RoleChip :key="$page.props.user.role" :role="$page.props.user.role"></RoleChip>
             </div>
             <v-menu
                 bottom
@@ -93,16 +105,31 @@
 </template>
 
 <script>
-    import RoleChip from "../Pages/Users/RoleChip";
+    import RoleChip from "../Pages/Shared/Users/RoleChip";
+    import Notification from "../Pages/Shared/Notifications/Notification";
+
     export default {
-        components: {RoleChip},
+        components: {
+            RoleChip,
+            Notification
+        },
+        props: {
+            title: String,
+        },
+        watch: {
+            title: {
+                immediate: true,
+                handler(title) {
+                    document.title = title
+                },
+            },
+        },
         data() {
             return {
                 showingNavigationDropdown: false,
                 drawer: null,
             }
         },
-
         methods: {
             logout() {
                 this.$inertia.post(route('logout'));
