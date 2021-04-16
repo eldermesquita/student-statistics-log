@@ -2,24 +2,30 @@
 
 namespace App\Services;
 
-use App\Http\Requests\CourseRequest;
+use App\Http\Requests\Courses\CreateRequest;
+use App\Http\Requests\Courses\UpdateRequest;
 use App\Models\Course;
 
 class CourseService
 {
-    public function create(CourseRequest $request): Course
+    public function create(CreateRequest $request): Course
     {
-        return Course::create([
+        $course = Course::create([
             'title' => $request['title']
         ]);
+
+        $course->teachers()->sync($request['teachers']);
+
+        return $course;
     }
 
-    public function edit(int $id, CourseRequest $request): void
+    public function edit(int $id, UpdateRequest $request): void
     {
         $course = $this->getCourse($id);
         $course->update([
             'title' => $request['title']
         ]);
+        $course->teachers()->sync($request['teachers']);
     }
 
     public function remove(int $id)

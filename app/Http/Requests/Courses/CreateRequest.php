@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Courses;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CourseRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'title' => 'required|string|max:128|unique:courses'
+            'title' => 'required|string|max:128|unique:courses,title',
+            'teachers' => 'array'
         ];
     }
 

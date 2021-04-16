@@ -2,14 +2,21 @@
     <app-layout title="Предметы">
         <v-card class="mb-5">
             <v-card-title>Панель управления предметами</v-card-title>
-            <v-card-text>
+            <v-card-text class="d-flex justify-space-between align-center">
                 <span>
                     Администраторы могут редактировать предметы, а также создавать новые.
                 </span>
+                <v-btn
+                    class="mb-1"
+                    color="primary"
+                    @click="$inertia.get(route('courses.create'))"
+                >
+                    Создать предмет
+                </v-btn>
             </v-card-text>
         </v-card>
-        <v-row>
-            <v-col cols="3" v-for="course in courses.data" :key="course.title">
+        <v-row >
+            <v-col md="6" lg="4" xl="3" v-for="course in courses.data" :key="course.title">
                 <v-card>
                     <v-card-title
                         class="pb-1"
@@ -25,7 +32,7 @@
                             <span>{{ course.teachers_count }} учителей</span>
                         </div>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions class="overflow-hidden">
                         <div class="ml-2 d-flex flex-row align-center">
                             <v-icon color="success" class="mr-1">mdi-check</v-icon>
                             <span class="green--text">Активен</span>
@@ -42,7 +49,7 @@
                             color="primary"
                             @click="$inertia.get(route('courses.edit', course.id))"
                         >
-                            Редактировать
+                            Редактиров.
                         </v-btn>
                     </v-card-actions>
                 </v-card>

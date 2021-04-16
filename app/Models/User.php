@@ -80,7 +80,13 @@ class User extends Authenticatable
 
     public function scopeFullName(Builder $query, $fullName)
     {
-        return $query->orWhereRaw("concat(name, ' ', surname, ' ', patronymic) like '%$fullName%' ");
+        return $query->orWhereRaw("concat(surname, ' ', name, ' ', patronymic) like '%$fullName%' ");
+    }
+
+    public function scopeWorkers(Builder $query)
+    {
+        return $query->where('role', '=', User::ROLE_TEACHER)
+            ->orWhere('role', '=', User::ROLE_ADMIN);
     }
 
     public function getAbbreviatedNameAttribute()

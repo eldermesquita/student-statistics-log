@@ -1,7 +1,7 @@
 <template>
-    <app-layout :title="course.data.title">
+    <app-layout title="Создание нового предмета">
         <v-card class="mb-5">
-            <v-card-title>Редактирование предмета {{ course.data.title }}</v-card-title>
+            <v-card-title>Создание нового предмета</v-card-title>
             <v-card-text>
                 <span>
                     Признак активности предмета влияет на появление его в списках к созданию АКР.
@@ -12,7 +12,7 @@
             <v-col cols="12">
                 <v-card>
                     <v-card-text>
-                        <v-form @submit.prevent="update">
+                        <v-form @submit.prevent="create">
                             <v-text-field
                                 v-model="form.title"
                                 label="Название"
@@ -81,10 +81,10 @@ export default {
             users: [],
             search: null,
             loadingUsers: false,
-            form: {
-                title: this.course.data.title,
+            form: this.$inertia.form({
+                title: '',
                 teachers: []
-            }
+            })
         }
     },
     watch: {
@@ -97,7 +97,7 @@ export default {
     methods: {
         fetchUsers (filters) {
             this.loadingUsers = true
-            axios.get(route('users.workers'), {
+            axios.get('/users/workers', {
                 params: filters
 
             }).then(
@@ -106,24 +106,9 @@ export default {
                 }
             ).finally(() => (this.loadingUsers = false))
         },
-        update () {
-            let ids = this.form.teachers.map(value => {
-                return typeof value === 'object' ? value.id : value
-            })
-            this.$inertia.put(route('courses.update', this.course.data.id), {
-                title: this.form.title,
-                teachers: ids
-            })
+        create () {
+            this.form.post(route('courses.store'))
         }
-    },
-    created() {
-        this.users = this.course.data.teachers.map((item) => {
-            return {
-                id: item.id,
-                abbreviated_name: item.abbreviated_name
-            }
-        })
-        this.form.teachers = this.users
     }
 }
 </script>

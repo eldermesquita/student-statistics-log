@@ -25,4 +25,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::resource('users', UsersController::class)->only('index');
     Route::put('/users/{user}/change-role', ChangeRoleController::class)->name('users.role.change')->middleware('can:manage-users');
+    Route::get('/users/workers', [UsersController::class, 'workers'])->name('users.workers');
 });

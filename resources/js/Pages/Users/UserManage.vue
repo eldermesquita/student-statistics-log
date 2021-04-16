@@ -64,6 +64,7 @@ export default {
     props: [
         'users',
         'roles',
+        'filters',
         'can'
     ],
     components: {
@@ -73,7 +74,7 @@ export default {
     },
     data () {
         return {
-            search: '',
+            search: this.filters.filter.full_name,
             loading: false,
             options: {},
             headers: [
@@ -118,6 +119,7 @@ export default {
             })
         },
         filterByName () {
+            this.loading = true
             this.$inertia.get(route('users.index'), {
                 'filter[full_name]': this.search
             }, {
