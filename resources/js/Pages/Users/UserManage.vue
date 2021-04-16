@@ -11,28 +11,45 @@
                 </span>
             </v-card-text>
         </v-card>
-        <v-data-table
-            :headers="headers"
-            :items="users.data"
-            :server-items-length="users.pagination.total"
-            :options.sync="options"
-            :page="users.pagination.current"
-            class="elevation-1 col-12 mt-5"
-            :disable-sort="true"
-            @update:page="changePage"
-            :loading="loading"
-            :footer-props="{
-                showFirstLastPage: true,
-                disableItemsPerPage : true,
-                itemsPerPageText: 'Кол-во на странице: '
-            }"
-        >
-            <template v-slot:item.role="{ item }">
-                <div @click="can.manageUsers ? openModal(item.id, item.role) : false">
-                    <RoleChip :key="item.role" :role="item.role"></RoleChip>
-                </div>
-            </template>
-        </v-data-table>
+        <v-card class="mt-5">
+            <v-card-title>
+                Пользователи
+                <v-spacer></v-spacer>
+                <v-text-field
+                    class="font-weight-regular col-sm-6 col-md-3"
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    @click:append="filterByName"
+                    @keyup.enter="filterByName"
+                    label="Поиск"
+                    single-line
+                    hide-details
+                ></v-text-field>
+            </v-card-title>
+            <v-data-table
+                :headers="headers"
+                :items="users.data"
+                :server-items-length="users.pagination.total"
+                :options.sync="options"
+                :page="users.pagination.current"
+                class="col-12 mt-5"
+                :disable-sort="true"
+                @update:page="changePage"
+                :loading="loading"
+                :footer-props="{
+                    showFirstLastPage: true,
+                    disableItemsPerPage : true,
+                    itemsPerPageText: 'Кол-во на странице: ',
+                }"
+                no-data-text="Пользователей не найдено"
+            >
+                <template v-slot:item.role="{ item }">
+                    <div @click="can.manageUsers ? openModal(item.id, item.role) : false">
+                        <RoleChip :key="item.role" :role="item.role"></RoleChip>
+                    </div>
+                </template>
+            </v-data-table>
+        </v-card>
         <ChangeRoleDialog :roles="roles"></ChangeRoleDialog>
     </app-layout>
 </template>
@@ -56,6 +73,7 @@ export default {
     },
     data () {
         return {
+            search: '',
             loading: false,
             options: {},
             headers: [
@@ -89,9 +107,7 @@ export default {
     methods: {
         changePage(pagination) {
             this.loading = true;
-            this.$inertia.get(route('users.index'), {
-                page: pagination
-            }, {
+            this.$inertia.get(this.users.meta.links[pagination].url, {
                 onSuccess: () => this.loading = false
             })
         },
@@ -101,6 +117,13 @@ export default {
                 currentRole: role
             })
         },
+        filterByName () {
+            this.$inertia.get(route('users.index'), {
+                'filter[full_name]': this.search
+            }, {
+                onSuccess: () => this.loading = false
+            })
+        }
     }
 }
 </script>

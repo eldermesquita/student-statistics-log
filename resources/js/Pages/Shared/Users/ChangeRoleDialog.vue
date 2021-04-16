@@ -10,7 +10,7 @@
                 <v-radio-group
                     v-model="selectedRole"
                     column
-                    hide-details
+                    :error-messages="$page.props.errors.role"
                 >
                     <v-radio
                         v-for="(role, value) in roles"

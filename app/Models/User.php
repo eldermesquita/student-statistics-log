@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -66,14 +68,24 @@ class User extends Authenticatable
         'abbreviated_name'
     ];
 
-    public function getAbbreviatedNameAttribute()
-    {
-        return "{$this->surname} {$this->name} {$this->patronymic}";
-    }
-
     public function session()
     {
         return $this->hasOne(Session::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+
+    public function scopeFullName(Builder $query, $fullName)
+    {
+        return $query->orWhereRaw("concat(name, ' ', surname, ' ', patronymic) like '%$fullName%' ");
+    }
+
+    public function getAbbreviatedNameAttribute()
+    {
+        return "$this->surname $this->name $this->patronymic";
     }
 
     public function isAdmin(): bool

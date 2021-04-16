@@ -10,4 +10,14 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = ['title'];
+
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
+    }
 }

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseRequest;
+use App\Http\Resources\Courses\CourseCollection;
+use App\Http\Resources\Courses\CourseDetailResource;
+use App\Http\Resources\Courses\CourseResource;
 use App\Models\Course;
+use App\Models\User;
 use App\Services\CourseService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class CoursesController extends Controller
 {
@@ -22,11 +27,15 @@ class CoursesController extends Controller
     }
 
     /**
-     * @return Response
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
-        //
+        $courses = Course::with(['teachers', 'tests'])->paginate(16);
+
+        return Inertia::render('Courses/Index', [
+            'courses' => new CourseCollection($courses)
+        ]);
     }
 
     /**
@@ -48,10 +57,13 @@ class CoursesController extends Controller
 
     /**
      * @param Course $course
-     * @return Response
+     * @return \Inertia\Response
      */
-    public function edit(Course $course): Response
+    public function edit(Course $course): \Inertia\Response
     {
+        return Inertia::render('Courses/Edit', [
+            'course' => new CourseDetailResource($course)
+        ]);
     }
 
     /**

@@ -39,6 +39,7 @@
                 </v-list-item>
                 <v-list-item
                     link
+                    @click="$inertia.visit(route('courses.index'))"
                 >
                     <v-list-item-icon>
                         <v-icon>mdi-notebook-outline</v-icon>

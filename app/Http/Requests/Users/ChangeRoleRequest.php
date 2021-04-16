@@ -24,7 +24,7 @@ class ChangeRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'role' => 'string'
+            'role' => 'required|string'
         ];
     }
 }
