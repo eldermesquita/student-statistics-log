@@ -33,6 +33,7 @@
                     color="blue darken-1"
                     text
                     @click="changeRole()"
+                    :loading="loading"
                 >
                     Сменить роль
                 </v-btn>
@@ -54,6 +55,7 @@ export default {
             selectedRole: '',
             userRole: null,
             isOpen: false,
+            loading: false
         }
     },
     mounted() {
@@ -67,8 +69,12 @@ export default {
             let form = new FormData();
             form.append('_method', 'put')
             form.append('role', this.selectedRole)
+            this.loading = true
             this.$inertia.post(this.route('users.role.change', this.userRole.userId), form, {
-                onSuccess: () => this.isOpen = false
+                onFinish: () => {
+                    this.isOpen = false
+                    this.loading = false
+                }
             })
         }
     }

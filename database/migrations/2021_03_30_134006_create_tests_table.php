@@ -10,8 +10,8 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('teacher_id')->constrained('users');
-            $table->foreignId('course_id')->constrained('courses');
+            $table->foreignId('teacher_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete();
             $table->tinyInteger('number_classroom_archived');
             $table->char('postfix_classroom_archived', 4);
             $table->string('title');

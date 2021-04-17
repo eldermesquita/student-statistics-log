@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/', function () {
+    Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::resource('courses', CoursesController::class)->only('index');

@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Services\CourseService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,6 +34,9 @@ class CoursesController extends Controller
         $courses = Course::with(['teachers', 'tests'])->paginate(16);
 
         return Inertia::render('Courses/Index', [
+            'can' => [
+                'manageCourses' => Auth::user()->can('manage-courses')
+            ],
             'courses' => new CourseCollection($courses)
         ]);
     }
@@ -84,6 +88,6 @@ class CoursesController extends Controller
     public function destroy(Course $course): RedirectResponse
     {
         $this->service->remove($course->id);
-        return redirect()->route('courses.index');
+        return redirect()->back()->with('success', __('messages.course.delete'));
     }
 }

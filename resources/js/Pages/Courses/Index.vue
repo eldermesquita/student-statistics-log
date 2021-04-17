@@ -4,12 +4,13 @@
             <v-card-title>Панель управления предметами</v-card-title>
             <v-card-text class="d-flex justify-space-between align-center">
                 <span>
-                    Администраторы могут редактировать предметы, а также создавать новые.
+                    Администраторы могут создавать, редактировать, удалять предметы.
                 </span>
                 <v-btn
                     class="mb-1"
                     color="primary"
                     @click="$inertia.get(route('courses.create'))"
+                    v-if="can.manageCourses"
                 >
                     Создать предмет
                 </v-btn>
@@ -20,7 +21,21 @@
                 <v-card>
                     <v-card-title
                         class="pb-1"
-                    >{{ course.title }}
+                    >
+                        <span>{{ course.title }}</span>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            fab
+                            x-small
+                            color="primary"
+                            depressed
+                            @click="openDeleteDialog(course.id)"
+                            v-if="can.manageCourses"
+                        >
+                            <v-icon dark>
+                                mdi-delete
+                            </v-icon>
+                        </v-btn>
                     </v-card-title>
                     <v-card-text class="pb-0">
                         <div class="d-flex flex-row align-center mb-1">
@@ -48,6 +63,7 @@
                             text
                             color="primary"
                             @click="$inertia.get(route('courses.edit', course.id))"
+                            v-if="can.manageCourses"
                         >
                             Редактиров.
                         </v-btn>
@@ -55,6 +71,7 @@
                 </v-card>
             </v-col>
         </v-row>
+        <DeleteDialog></DeleteDialog>
         <Pagination
             :meta="courses.meta"
             link="courses.index"
@@ -66,14 +83,28 @@
 
 import AppLayout from '@/Layouts/AppLayout'
 import Pagination from "../Shared/Pagination/Pagination";
+import DeleteDialog from "./DeleteDialog";
+import { EventBus } from "@/event-bus.js";
 
 export default {
     props: [
         'courses',
+        'can'
     ],
     components: {
         Pagination,
-        AppLayout
+        AppLayout,
+        DeleteDialog
+    },
+    data () {
+        return {
+            deleteDialog: false
+        }
+    },
+    methods: {
+        openDeleteDialog (userId) {
+            EventBus.$emit('openDeleteCourseDialog', userId)
+        }
     }
 }
 </script>
