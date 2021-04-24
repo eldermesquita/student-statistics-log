@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Classroom;
-use App\Models\Test;
 use Illuminate\Database\Seeder;
 
-class TestSeeder extends Seeder
+class TaskSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +13,6 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
-        Test::factory()->count(10)->create();
+        //
     }
 }

@@ -21,6 +21,7 @@ class ClassroomFactory extends Factory
         return [
             'number' => $this->faker->numberBetween(1, 10),
             'postfix' => Str::random(1),
+            'status' => Classroom::STATUS_ACTIVE,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

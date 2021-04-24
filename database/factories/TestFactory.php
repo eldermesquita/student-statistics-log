@@ -20,13 +20,10 @@ class TestFactory extends Factory
      */
     public function definition(): array
     {
-        $classroom = Classroom::factory()->create();
-
         return [
             'teacher_id' => User::factory()->admin(),
             'course_id' => Course::factory(),
-            'number_classroom_archived' => $classroom->number,
-            'postfix_classroom_archived' => $classroom->postfix,
+            'classroom_id' => Classroom::factory(),
             'title' => $this->faker->word,
             'description' => $this->faker->text,
             'passed_at' => Carbon::now(),

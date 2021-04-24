@@ -12,6 +12,7 @@ class CreateClassroomsTable extends Migration
             $table->bigIncrements('id');
             $table->tinyInteger('number');
             $table->char('postfix', 4);
+            $table->string('status', 12);
             $table->timestamps();
         });
     }

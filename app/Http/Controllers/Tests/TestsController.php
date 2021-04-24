@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Tests;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Tests\CreateRequest;
 use App\Http\Requests\Tests\UpdateRequest;
 use App\Models\Test;
 use App\Services\TestService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
+use function __;
+use function redirect;
 
 class TestsController extends Controller
 {
@@ -22,11 +26,15 @@ class TestsController extends Controller
     }
 
     /**
-     * @return Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
+        $tests = Test::all();
+
+        return Inertia::render('Tests/Index', [
+            'tests' => $tests
+        ]);
     }
 
     /**
@@ -49,11 +57,13 @@ class TestsController extends Controller
 
     /**
      * @param Test $test
-     * @return Response
+     * @return \Inertia\Response
      */
     public function show(Test $test)
     {
-        //
+        return Inertia::render('Tests/Show', [
+            'test' => $test
+        ]);
     }
 
     /**

@@ -12,8 +12,7 @@ class CreateTestsTable extends Migration
             $table->bigIncrements('id');
             $table->foreignId('teacher_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete();
-            $table->tinyInteger('number_classroom_archived');
-            $table->char('postfix_classroom_archived', 4);
+            $table->foreignId('classroom_id')->nullable()->constrained('classrooms')->nullOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('passed_at');
