@@ -8,11 +8,10 @@
             <v-card-text>
                 <v-form @submit.prevent="submit">
                     <v-text-field
-                        v-model="form.email"
-                        label="Почта"
+                        v-model="form.username"
+                        label="Логин"
                         required
-                        type="email"
-                        :error-messages="errors.email"
+                        :error-messages="errors.username"
                     ></v-text-field>
                     <v-text-field
                         v-model="form.password"
@@ -45,7 +44,7 @@
         data() {
             return {
                 form: this.$inertia.form({
-                    email: '',
+                    username: '',
                     password: '',
                     remember: false
                 })

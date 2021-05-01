@@ -5,22 +5,30 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\ChangeRoleRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\UserService;
+use DomainException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
 class ChangeRoleController extends Controller
 {
-    public function __invoke(ChangeRoleRequest $request, User $user)
+    /**
+     * @var UserService
+     */
+    private $service;
+
+    public function __construct(UserService $service)
     {
-        if (!array_key_exists($request['role'], User::getRoles())) {
-            return Redirect::back()->with('error', __('messages.role.not_exist'));
-        }
+        $this->service = $service;
+    }
 
-        if ($user->role === $request['role']) {
-            return Redirect::back()->with('error', __('messages.role.current_fail'));
+    public function __invoke(ChangeRoleRequest $request, User $user): RedirectResponse
+    {
+        try {
+            $this->service->changeRole($request, $user);
+        } catch (DomainException $exception) {
+            return Redirect::back()->with('error', $exception->getMessage());
         }
-
-        $user->update($request->only('role'));
 
         return Redirect::back()->with('success', __('messages.role.change_success'));
     }

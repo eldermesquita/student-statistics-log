@@ -71,8 +71,10 @@ export default {
             form.append('role', this.selectedRole)
             this.loading = true
             this.$inertia.post(this.route('users.role.change', this.userRole.userId), form, {
-                onFinish: () => {
+                onSuccess: () => {
                     this.isOpen = false
+                },
+                onFinish: () => {
                     this.loading = false
                 }
             })

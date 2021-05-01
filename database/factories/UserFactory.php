@@ -27,8 +27,7 @@ class UserFactory extends Factory
             'name' => $this->faker->firstName,
             'patronymic' => $this->faker->middleName(),
             'surname' => $this->faker->lastName,
-            'email' => $this->faker->unique()->safeEmail,
-            'email_verified_at' => now(),
+            'username' => $this->faker->unique()->userName,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
             'role' => User::ROLE_GUEST
@@ -72,6 +71,15 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'role' => User::ROLE_TEACHER
+            ];
+        });
+    }
+
+    public function root(): UserFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => User::ROLE_ROOT
             ];
         });
     }

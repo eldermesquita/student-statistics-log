@@ -2,6 +2,8 @@
 
 return [
 
+    'root_admin_password' => env('ROOT_ADMIN_PASSWORD', 'root'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

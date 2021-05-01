@@ -2,13 +2,21 @@
     <app-layout title="Пользователи">
         <v-card>
             <v-card-title>Панель управления пользователями</v-card-title>
-            <v-card-text>
+            <v-card-text class="d-flex justify-space-between align-center">
                 <span v-if="can.manageUsers">
                     Для смены роли пользователя нажмите на его роль, после чего появится диалоговое окно.
                 </span>
                 <span v-else>
                     Смена роли пользователей доступна только администраторам.
                 </span>
+                <v-btn
+                    class="mb-1"
+                    color="primary"
+                    @click="$inertia.get(route('users.create'))"
+                    v-if="can.manageUsers"
+                >
+                    Создать пользователя
+                </v-btn>
             </v-card-text>
         </v-card>
         <v-card class="mt-5">
@@ -64,6 +72,7 @@ export default {
     props: [
         'users',
         'roles',
+        'sortingRoles',
         'filters',
         'can'
     ],

@@ -22,6 +22,8 @@ class User extends Authenticatable
     public const ROLE_ADMIN = 'admin';
     public const ROLE_TEACHER = 'teacher';
     public const ROLE_GUEST = 'guest';
+    public const ROLE_TECHNICAL_SPECIALIST = 'specialist';
+    public const ROLE_ROOT = 'root';
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +36,8 @@ class User extends Authenticatable
         'patronymic',
         'email',
         'password',
-        'role'
+        'role',
+        'username'
     ];
 
     /**
@@ -99,9 +102,19 @@ class User extends Authenticatable
         return $this->role === self::ROLE_ADMIN;
     }
 
+    public function isTechnicalSpecialist(): bool
+    {
+        return $this->role === self::ROLE_TECHNICAL_SPECIALIST;
+    }
+
     public function isTeacher(): bool
     {
         return $this->role === self::ROLE_TEACHER;
+    }
+
+    public function isRoot(): bool
+    {
+        return $this->role === self::ROLE_ROOT;
     }
 
     public function isGuest(): bool
@@ -114,12 +127,24 @@ class User extends Authenticatable
         return $this->isAdmin() || $this->isTeacher();
     }
 
-    public static function getRoles(): array
+    public function roleAlreadyBeenAssigned(string $role): bool
     {
-        return [
-            User::ROLE_ADMIN => __('roles.admin'),
-            User::ROLE_GUEST => __('roles.guest'),
-            User::ROLE_TEACHER => __('roles.teacher'),
-        ];
+        return $this->role === $role;
+    }
+
+    public static function getRoles(bool $withRootRole = false): array
+    {
+        $roles = [];
+
+        if ($withRootRole) {
+            $roles[User::ROLE_ROOT] = __('roles.root');
+        }
+
+        $roles[User::ROLE_ADMIN] = __('roles.admin');
+        $roles[User::ROLE_GUEST] = __('roles.guest');
+        $roles[User::ROLE_TEACHER] = __('roles.teacher');
+        $roles[User::ROLE_TECHNICAL_SPECIALIST] = __('roles.technical_specialist');
+
+        return $roles;
     }
 }

@@ -24,12 +24,22 @@ export default {
                 {
                     name: 'admin',
                     label: 'Администр.',
-                    color: 'red'
+                    color: 'blue'
                 },
                 {
                     name: 'teacher',
                     label: 'Учитель',
                     color: 'orange'
+                },
+                {
+                    name: 'root',
+                    label: 'Корн. техн. специалист',
+                    color: 'red'
+                },
+                {
+                    name: 'specialist',
+                    label: 'Техн. специалист',
+                    color: 'red'
                 },
             ]
         }

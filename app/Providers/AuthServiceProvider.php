@@ -26,6 +26,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::before(function (User $user) {
+            return $user->isRoot() || $user->isTechnicalSpecialist();
+        });
+
         Gate::define('manage-courses', function (User $user) {
             return $user->isAdmin();
         });
@@ -35,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-users', function (User $user) {
-            return $user->isAdmin();
+            return $user->isTechnicalSpecialist();
         });
     }
 }
