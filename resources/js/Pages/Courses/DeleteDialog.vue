@@ -45,8 +45,10 @@ export default {
         remove () {
             this.loading = true
             this.$inertia.delete(this.route('courses.destroy', this.userId), {
-                onFinish: () => {
+                onSuccess: () => {
                     this.isOpen = false
+                },
+                onFinish: () => {
                     this.loading = false
                 }
             })

@@ -137,13 +137,13 @@ class User extends Authenticatable
         $roles = [];
 
         if ($withRootRole) {
-            $roles[User::ROLE_ROOT] = __('roles.root');
+            $roles[self::ROLE_ROOT] = __('roles.root');
         }
 
-        $roles[User::ROLE_ADMIN] = __('roles.admin');
-        $roles[User::ROLE_GUEST] = __('roles.guest');
-        $roles[User::ROLE_TEACHER] = __('roles.teacher');
-        $roles[User::ROLE_TECHNICAL_SPECIALIST] = __('roles.technical_specialist');
+        $roles[self::ROLE_ADMIN] = __('roles.admin');
+        $roles[self::ROLE_GUEST] = __('roles.guest');
+        $roles[self::ROLE_TEACHER] = __('roles.teacher');
+        $roles[self::ROLE_TECHNICAL_SPECIALIST] = __('roles.technical_specialist');
 
         return $roles;
     }

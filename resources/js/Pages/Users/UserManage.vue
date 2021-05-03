@@ -38,6 +38,7 @@
                 :headers="headers"
                 :items="users.data"
                 :server-items-length="users.pagination.total"
+                :items-per-page="users.meta.per_page"
                 :options.sync="options"
                 :page="users.pagination.current"
                 class="col-12 mt-5"

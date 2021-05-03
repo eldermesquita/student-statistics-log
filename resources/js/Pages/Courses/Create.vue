@@ -89,9 +89,11 @@ export default {
     },
     watch: {
         search: _.debounce(function(value) {
-            this.fetchUsers({
-                'filter[full_name]': value,
-            })
+            if (value && value.length > 0) {
+                this.fetchUsers({
+                    'filter[full_name]': value,
+                })
+            }
         }, 500)
     },
     methods: {
@@ -99,7 +101,6 @@ export default {
             this.loadingUsers = true
             axios.get('/users/workers', {
                 params: filters
-
             }).then(
                 response => {
                     this.users = _.unionBy(this.users, response.data.data, 'id')
