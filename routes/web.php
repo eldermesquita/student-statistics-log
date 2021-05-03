@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\Periods\PeriodsController;
 use App\Http\Controllers\Tests\TestsController;
 use App\Http\Controllers\Users\ChangeRoleController;
 use App\Http\Controllers\Users\UsersController;
@@ -8,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::resource('courses', CoursesController::class)->only('index');
@@ -16,6 +17,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('courses', CoursesController::class)->only([
         'create', 'store', 'edit', 'update', 'destroy'
     ])->middleware('can:manage-courses');
+
+    Route::resource('periods', PeriodsController::class);
+    Route::put('/periods/{period}/activate', [PeriodsController::class, 'activate'])->name('periods.activate');
 
     Route::resource('tests', TestsController::class)->only('index', 'show');
 

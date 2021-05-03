@@ -10,9 +10,6 @@ class Classroom extends Model
 {
     use HasFactory;
 
-    const STATUS_ACTIVE = 'active';
-    const STATUS_ARCHIVED = 'archived';
-
     public function students(): HasMany
     {
         return $this->hasMany(Student::class);

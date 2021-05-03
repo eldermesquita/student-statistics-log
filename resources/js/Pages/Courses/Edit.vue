@@ -89,9 +89,11 @@ export default {
     },
     watch: {
         search: _.debounce(function(value) {
-            this.fetchUsers({
-                'filter[full_name]': value,
-            })
+            if (value && value.length > 0) {
+                this.fetchUsers({
+                    'filter[full_name]': value,
+                })
+            }
         }, 500)
     },
     methods: {

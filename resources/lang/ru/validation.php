@@ -3,7 +3,7 @@
 return [
     'accepted'             => 'Вы должны принять :attribute.',
     'active_url'           => 'Поле :attribute содержит недействительный URL.',
-    'after'                => 'В поле :attribute должна быть дата больше :date.',
+    'after'                => 'Поле :attribute должна быть больше :date.',
     'after_or_equal'       => 'В поле :attribute должна быть дата больше или равняться :date.',
     'alpha'                => 'Поле :attribute может содержать только буквы.',
     'alpha_dash'           => 'Поле :attribute может содержать только буквы, цифры, дефис и нижнее подчеркивание.',
@@ -149,7 +149,11 @@ return [
         'title'                 => 'Наименование',
         'username'              => 'Никнейм',
         'year'                  => 'Год',
-        'role'                  => 'Роль'
+        'role'                  => 'Роль',
+        'started_at'            => 'Начальная дата',
+        'ended_at'              => 'Конечная дата',
+        'status'                => 'Статус'
     ],
-    'role_not_exist' => 'Роль не существует'
+    'role_not_exist' => 'Роль не существует.',
+    'status_not_exist' => 'Статус не существует.'
 ];

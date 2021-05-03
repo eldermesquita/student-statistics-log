@@ -39,6 +39,30 @@
                 </v-list-item>
                 <v-list-item
                     link
+                    @click="$inertia.visit(route('students.index'))"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-library</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>Ученики</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                    link
+                    @click="$inertia.visit(route('periods.index'))"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-calendar-range</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>Года обучения</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                    link
                     @click="$inertia.visit(route('courses.index'))"
                 >
                     <v-list-item-icon>
@@ -49,6 +73,18 @@
                         <v-list-item-title>Учебные предметы</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item
+                    link
+                    @click="$inertia.visit(route('tests.index'))"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-file-document-multiple-outline</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>АКР</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
 
@@ -57,6 +93,9 @@
 
             <v-toolbar-title>Журнал АКР</v-toolbar-title>
             <v-spacer></v-spacer>
+            <div class="mr-5">
+                <ActivePeriod />
+            </div>
             <div class="mr-5">
                 <RoleChip :key="$page.props.user.role" :role="$page.props.user.role"></RoleChip>
             </div>
@@ -108,11 +147,13 @@
 <script>
     import RoleChip from "../Pages/Shared/Users/RoleChip";
     import Notification from "../Pages/Shared/Notifications/Notification";
+    import ActivePeriod from "../Pages/Shared/ActivePeriod";
 
     export default {
         components: {
             RoleChip,
-            Notification
+            Notification,
+            ActivePeriod
         },
         props: {
             title: String,

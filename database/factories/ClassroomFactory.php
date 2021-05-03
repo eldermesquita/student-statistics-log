@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Classroom;
+use App\Models\Period;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -20,8 +21,8 @@ class ClassroomFactory extends Factory
     {
         return [
             'number' => $this->faker->numberBetween(1, 10),
+            'period_id' => Period::factory(),
             'postfix' => Str::random(1),
-            'status' => Classroom::STATUS_ACTIVE,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

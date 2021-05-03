@@ -11,8 +11,8 @@ class CreateClassroomsTable extends Migration
         Schema::create('classrooms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->tinyInteger('number');
+            $table->foreignId('period_id')->nullable()->constrained('periods')->nullOnDelete();
             $table->char('postfix', 4);
-            $table->string('status', 12);
             $table->timestamps();
         });
     }
