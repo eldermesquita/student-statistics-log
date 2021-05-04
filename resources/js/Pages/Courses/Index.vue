@@ -1,5 +1,10 @@
 <template>
     <app-layout title="Предметы">
+        <template v-slot:breadcrumbs>
+            <v-breadcrumbs-item disabled>
+                Учебные предметы
+            </v-breadcrumbs-item>
+        </template>
         <v-card class="mb-5">
             <v-card-title>Панель управления предметами</v-card-title>
             <v-card-text class="d-flex justify-space-between align-center">

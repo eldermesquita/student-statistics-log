@@ -1,21 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Students;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Classrooms\ClassroomCollection;
 use App\Models\Classroom;
+use App\Models\Period;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ClassroomsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        $period = Period::active()->first();
+        $classrooms = $period->classrooms()->paginate(10);
+
+        return Inertia::render('Classrooms/Index', [
+            'classrooms' => new ClassroomCollection($classrooms)
+        ]);
     }
 
     /**

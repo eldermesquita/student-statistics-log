@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Classrooms\StudentsController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\Periods\PeriodsController;
+use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\Tests\TestsController;
 use App\Http\Controllers\Users\ChangeRoleController;
 use App\Http\Controllers\Users\UsersController;
@@ -20,6 +22,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::resource('periods', PeriodsController::class);
     Route::put('/periods/{period}/activate', [PeriodsController::class, 'activate'])->name('periods.activate');
+
+    Route::resource('classrooms', ClassroomsController::class);
+
+    Route::get('/classrooms/{classroom}/students', [StudentsController::class, 'index'])->name('classrooms.students.index');
+    Route::put('/students/{student}/transfer', [StudentsController::class, 'index'])->name('students.transfer');
+    Route::post('/classrooms/{classroom}/students', [StudentsController::class, 'store'])->name('students.store');
+    Route::resource('students', StudentsController::class)->only('update', 'destroy');
 
     Route::resource('tests', TestsController::class)->only('index', 'show');
 

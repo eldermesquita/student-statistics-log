@@ -1,5 +1,10 @@
 <template>
     <app-layout title="Пользователи">
+        <template v-slot:breadcrumbs>
+            <v-breadcrumbs-item disabled>
+                Пользователи
+            </v-breadcrumbs-item>
+        </template>
         <v-card>
             <v-card-title>Панель управления пользователями</v-card-title>
             <v-card-text class="d-flex justify-space-between align-center">

@@ -39,14 +39,14 @@
                 </v-list-item>
                 <v-list-item
                     link
-                    @click="$inertia.visit(route('students.index'))"
+                    @click="$inertia.visit(route('classrooms.index'))"
                 >
                     <v-list-item-icon>
                         <v-icon>mdi-library</v-icon>
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                        <v-list-item-title>Ученики</v-list-item-title>
+                        <v-list-item-title>Учебные классы</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
                 <v-list-item
@@ -58,7 +58,7 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                        <v-list-item-title>Года обучения</v-list-item-title>
+                        <v-list-item-title>Периоды обучения</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
                 <v-list-item
@@ -138,6 +138,15 @@
 
         <v-main class="grey lighten-5">
             <v-container>
+                <v-card class="mb-5">
+                    <v-breadcrumbs>
+                        <v-breadcrumbs-item :href="route('dashboard')" @click.prevent="$inertia.visit(route('dashboard'))">
+                            Главная
+                        </v-breadcrumbs-item>
+                        <v-breadcrumbs-divider>/</v-breadcrumbs-divider>
+                        <slot name="breadcrumbs"></slot>
+                    </v-breadcrumbs>
+                </v-card>
                 <slot></slot>
             </v-container>
         </v-main>

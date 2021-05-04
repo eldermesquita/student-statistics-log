@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Period extends Model
 {
@@ -22,6 +23,11 @@ class Period extends Model
         'started_at' => 'date:Y-m-d',
         'ended_at' => 'date:Y-m-d'
     ];
+
+    public function classrooms(): HasMany
+    {
+        return $this->hasMany(Classroom::class);
+    }
 
     public static function getStatuses(): array
     {
