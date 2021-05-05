@@ -11,7 +11,7 @@ use App\Models\Student;
 
 class StudentService
 {
-    public function create(Classroom $classroom, ManageRequest $request)
+    public function create(Classroom $classroom, ManageRequest $request): Student
     {
         $student = Student::make([
             'name' => $request['name']
@@ -24,9 +24,11 @@ class StudentService
 
     public function transfer(Student $student, TransferRequest $request): void
     {
-        $transfer = Classroom::findOrFail($request['transfer_classroom_id']);
+        $transfer = Classroom::findOrFail($request['transfer_id']);
 
         $student->classroom()->associate($transfer);
+
+        $student->update();
     }
 
     public function update(Student $student, ManageRequest $request): void

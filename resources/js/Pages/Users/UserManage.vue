@@ -123,7 +123,8 @@ export default {
     methods: {
         changePage(pagination) {
             this.loading = true;
-            this.$inertia.get(this.users.meta.links[pagination].url, {
+            this.$inertia.get(this.users.meta.links[pagination].url, {}, {
+                preserveScroll: true,
                 onSuccess: () => this.loading = false
             })
         },

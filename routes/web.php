@@ -23,12 +23,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('periods', PeriodsController::class);
     Route::put('/periods/{period}/activate', [PeriodsController::class, 'activate'])->name('periods.activate');
 
-    Route::resource('classrooms', ClassroomsController::class);
+    Route::resource('classrooms', ClassroomsController::class)->except('store');
+    Route::post('periods/{period}/classrooms', [ClassroomsController::class, 'store'])->name('classrooms.store');
 
     Route::get('/classrooms/{classroom}/students', [StudentsController::class, 'index'])->name('classrooms.students.index');
-    Route::put('/students/{student}/transfer', [StudentsController::class, 'index'])->name('students.transfer');
+    Route::put('/students/{student}/transfer', [StudentsController::class, 'transfer'])->name('students.transfer');
     Route::post('/classrooms/{classroom}/students', [StudentsController::class, 'store'])->name('students.store');
     Route::resource('students', StudentsController::class)->only('update', 'destroy');
+    Route::post('/students/import', [StudentsController::class, 'storeImport'])->name('students.import.store');
+    Route::get('/students/import', [StudentsController::class, 'import'])->name('students.import');
 
     Route::resource('tests', TestsController::class)->only('index', 'show');
 

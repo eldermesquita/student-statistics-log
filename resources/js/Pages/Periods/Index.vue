@@ -146,7 +146,9 @@ export default {
             })
         },
         activate(id) {
-            this.$inertia.put(this.route('periods.activate', id))
+            this.$inertia.put(this.route('periods.activate', id), {}, {
+                preserveScroll: true,
+            })
         },
         changePage(pagination) {
             this.loading = true;

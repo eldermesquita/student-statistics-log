@@ -6,7 +6,7 @@
         <v-card v-if="operation === 'remove'">
             <v-card>
                 <v-card-text class="pt-5 font-weight-medium">
-                    Вы действительно хотите удалить этого ученика
+                    Вы действительно хотите удалить этот класс
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -30,14 +30,19 @@
         </v-card>
         <v-card v-else>
             <v-card-title>
-                <span>Информация об ученике</span>
+                <span>Информация о классе</span>
             </v-card-title>
             <v-card-text class="pt-5">
                 <v-form class="d-flex align-center flex-wrap justify-center">
                     <v-text-field
-                        label="ФИО"
-                        v-model="form.name"
-                        :error-messages="form.errors.name"
+                        label="Номер"
+                        v-model="form.number"
+                        :error-messages="form.errors.number"
+                    ></v-text-field>
+                    <v-text-field
+                        label="Буква"
+                        v-model="form.postfix"
+                        :error-messages="form.errors.postfix"
                     ></v-text-field>
                 </v-form>
             </v-card-text>
@@ -86,9 +91,10 @@ export default {
             isOpen: false,
             operation: null,
             id: null,
-            classroom_id: null,
+            periodId: null,
             form: this.$inertia.form({
-                name: '',
+                number: '',
+                postfix: ''
             })
         }
     },
@@ -101,13 +107,13 @@ export default {
     },
     methods: {
         create() {
-            this.form.post(this.route('students.store', this.classroom_id), {
+            this.form.post(this.route('classrooms.store', this.periodId), {
                 onSuccess: () => this.isOpen = false,
                 onFinish: () => this.form.reset()
             })
         },
         edit() {
-            this.form.put(this.route('students.update', this.id), {
+            this.form.put(this.route('classrooms.update', this.id), {
                 onSuccess: () => {
                     this.isOpen = false
                     this.form.reset()
@@ -115,23 +121,24 @@ export default {
             })
         },
         remove() {
-            this.$inertia.delete(this.route('students.destroy', this.id), {
+            this.$inertia.delete(this.route('classrooms.destroy', this.id), {
                 onSuccess: () => this.isOpen = false
             })
         }
     },
     mounted() {
-        EventBus.$on('openStudentFormModal', (options) => {
+        EventBus.$on('openClassroomFormModal', (options) => {
             this.isOpen = true
             this.operation = options.operation
             if (options.operation === 'edit') {
-                this.form.name = options.data.name
+                this.form.number = options.data.number
+                this.form.postfix = options.data.postfix
             }
             if (options.operation === 'edit' || options.operation === 'remove') {
                 this.id = options.id
             }
             if (options.operation === 'create') {
-                this.classroom_id = options.classroom_id
+                this.periodId = options.periodId
             }
         })
     }

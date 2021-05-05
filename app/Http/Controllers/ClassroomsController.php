@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Classrooms\ManageRequest;
 use App\Http\Resources\Classrooms\ClassroomCollection;
+use App\ManageServices\ClassroomService;
 use App\Models\Classroom;
 use App\Models\Period;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,81 +16,46 @@ use Inertia\Response;
 class ClassroomsController extends Controller
 {
     /**
-     * @return Response
+     * @var ClassroomService
      */
-    public function index(): Response
+    private $service;
+
+    public function __construct(ClassroomService $service)
+    {
+        $this->service = $service;
+    }
+
+    public function index(): RedirectResponse|Response
     {
         $period = Period::active()->first();
-        $classrooms = $period->classrooms()->paginate(10);
+
+        if (!$period) {
+            return redirect()->back()->with('error', __('messages.classroom.one_active_period'));
+        }
+
+        $classrooms = $period->classrooms()->orderByDesc('number')->paginate(10);
 
         return Inertia::render('Classrooms/Index', [
-            'classrooms' => new ClassroomCollection($classrooms)
+            'classrooms' => new ClassroomCollection($classrooms),
+            'period' => $period
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Period $period, ManageRequest $request): RedirectResponse
     {
-        //
+        $this->service->create($period, $request);
+        return redirect()->back()->with('success', __('messages.classroom.create'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(Classroom $classroom, ManageRequest $request): RedirectResponse
     {
-        //
+        $this->service->update($classroom, $request);
+        return redirect()->back()->with('success', __('messages.classroom.update'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Classroom $classroom
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Classroom $classroom)
+    public function destroy(Classroom $classroom): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Classroom $classroom
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Classroom $classroom)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Classroom $classroom
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Classroom $classroom)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Classroom $classroom
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Classroom $classroom)
-    {
-        //
+        $this->service->remove($classroom);
+        return redirect()->back()->with('success', __('messages.classroom.delete'));
     }
 }

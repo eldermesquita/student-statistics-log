@@ -43,12 +43,14 @@
                         <v-btn
                             color="primary"
                             dark
+                            @click="create"
                         >
                             Создать класс
                         </v-btn>
                         <v-btn
                             color="primary"
                             dark
+                            @click="$inertia.visit(route('students.import'))"
                         >
                             Импортировать учеников
                         </v-btn>
@@ -65,29 +67,36 @@
                     <v-icon
                         small
                         class="mr-2"
+                        @click="edit(item.id, item)"
                     >
                         mdi-pencil
                     </v-icon>
                     <v-icon
                         small
+                        @click="remove(item.id)"
                     >
                         mdi-delete
                     </v-icon>
                 </template>
             </v-data-table>
         </v-card>
+        <Form/>
     </app-layout>
 </template>
 
 <script>
 
 import AppLayout from '@/Layouts/AppLayout'
+import {EventBus} from "../../event-bus";
+import Form from "./Form";
 
 export default {
     props: [
-        'classrooms'
+        'classrooms',
+        'period'
     ],
     components: {
+        Form,
         AppLayout,
     },
     data () {
@@ -115,6 +124,25 @@ export default {
             this.loading = true;
             this.$inertia.get(this.classrooms.meta.links[pagination].url, {
                 onSuccess: () => this.loading = false
+            })
+        },
+        create() {
+            EventBus.$emit('openClassroomFormModal', {
+                operation: 'create',
+                periodId: this.period.id
+            })
+        },
+        edit(id, data) {
+            EventBus.$emit('openClassroomFormModal', {
+                id: id,
+                operation: 'edit',
+                data: data
+            })
+        },
+        remove(id) {
+            EventBus.$emit('openClassroomFormModal', {
+                id: id,
+                operation: 'remove',
             })
         },
     }

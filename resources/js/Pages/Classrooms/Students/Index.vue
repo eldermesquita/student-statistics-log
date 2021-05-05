@@ -1,5 +1,5 @@
 <template>
-    <app-layout title="Учебные классы">
+    <app-layout title="Ученики">
         <template v-slot:breadcrumbs>
             <v-breadcrumbs-item
                 :href="route('classrooms.index')"
@@ -8,7 +8,7 @@
             </v-breadcrumbs-item>
             <v-breadcrumbs-divider>/</v-breadcrumbs-divider>
             <v-breadcrumbs-item disabled>
-                Ученики
+                Ученики {{ classroom.number }}{{ classroom.postfix }}
             </v-breadcrumbs-item>
         </template>
         <v-card class="mb-5">
@@ -24,60 +24,63 @@
                 </div>
             </v-card-text>
         </v-card>
-        <v-data-table
-            :headers="headers"
-            :items="students.data"
-            :server-items-length="students.meta.total"
-            :options.sync="options"
-            :items-per-page="students.meta.per_page"
-            :page="students.meta.current_page"
-            @update:page="changePage"
-            @click:row=""
-            :loading="loading"
-            :footer-props="{
+        <v-card>
+            <v-data-table
+                :headers="headers"
+                :items="students.data"
+                :server-items-length="students.meta.total"
+                :options.sync="options"
+                :items-per-page="students.meta.per_page"
+                :page="students.meta.current_page"
+                @update:page="changePage"
+                @click:row=""
+                :loading="loading"
+                :footer-props="{
                 showFirstLastPage: true,
                 disableItemsPerPage : true,
                 itemsPerPageText: 'Кол-во на странице: ',
             }"
-            :disable-sort="true"
-            disable-sort
-            no-data-text="Ученики не найдены."
-        >
-            <template v-slot:top>
-                <div class="pt-3 pl-3">
-                    <v-btn
-                        color="primary"
-                        dark
-                        @click="create"
+                :disable-sort="true"
+                disable-sort
+                no-data-text="Ученики не найдены."
+            >
+                <template v-slot:top>
+                    <div class="pt-3 pl-3">
+                        <v-btn
+                            color="primary"
+                            dark
+                            @click="create"
+                        >
+                            Добавить ученика
+                        </v-btn>
+                    </div>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="edit(item.id, item)"
                     >
-                        Добавить ученика
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="remove(item.id)"
+                    >
+                        mdi-delete
+                    </v-icon>
+                    <v-btn
+                        small
+                        @click="transfer(item.id)"
+                    >
+                        Перевести
                     </v-btn>
-                </div>
-            </template>
-            <template v-slot:item.actions="{ item }">
-                <v-icon
-                    small
-                    class="mr-2"
-                    @click="edit(item.id, item)"
-                >
-                    mdi-pencil
-                </v-icon>
-                <v-icon
-                    small
-                    class="mr-2"
-                    @click="remove(item.id)"
-                >
-                    mdi-delete
-                </v-icon>
-                <v-btn
-                    small
-                    @click="transfer(item.id)"
-                >
-                    Перевести
-                </v-btn>
-            </template>
-        </v-data-table>
-        <Form></Form>
+                </template>
+            </v-data-table>
+        </v-card>
+        <Form />
+        <Transfer :classrooms="classrooms" />
     </app-layout>
 </template>
 
@@ -86,14 +89,17 @@
 import AppLayout from '@/Layouts/AppLayout'
 import {EventBus} from "../../../event-bus";
 import Form from "./Form";
+import Transfer from "./Transfer";
 
 export default {
     props: [
         'students',
-        'classroom'
+        'classroom',
+        'classrooms'
     ],
     components: {
         Form,
+        Transfer,
         AppLayout,
     },
     data () {
@@ -130,6 +136,12 @@ export default {
             EventBus.$emit('openStudentFormModal', {
                 id: id,
                 operation: 'remove',
+            })
+        },
+        transfer(studentId) {
+            EventBus.$emit('openTransferDialog', {
+                studentId: studentId,
+                currentClassroomId: this.classroom.id
             })
         },
         changePage(pagination) {

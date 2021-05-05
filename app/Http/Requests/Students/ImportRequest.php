@@ -4,7 +4,7 @@ namespace App\Http\Requests\Students;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TransferRequest extends FormRequest
+class ImportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class TransferRequest extends FormRequest
     public function rules()
     {
         return [
-            'transfer_id' => 'required|integer'
+            'start_row' => 'required|integer',
+            'smart_addition' => 'required|boolean',
+            'file' => 'required|file|mimes:csv,xls,xlsx'
         ];
     }
 }

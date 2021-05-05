@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Students;
+namespace App\Http\Requests\Classrooms;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TransferRequest extends FormRequest
+class ManageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class TransferRequest extends FormRequest
     public function rules()
     {
         return [
-            'transfer_id' => 'required|integer'
+            'number' => 'required|integer',
+            'postfix' => 'required|string|max:1'
         ];
     }
 }

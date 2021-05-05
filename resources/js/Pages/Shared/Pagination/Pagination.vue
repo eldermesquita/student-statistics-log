@@ -23,6 +23,8 @@ export default {
         changePage (pagination) {
             this.$inertia.get(route(this.link), {
                 page: pagination
+            }, {
+                preserveScroll: true,
             })
         }
     }

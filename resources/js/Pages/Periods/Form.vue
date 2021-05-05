@@ -123,6 +123,7 @@ export default {
     methods: {
         create() {
             this.form.post(this.route('periods.store'), {
+                preserveScroll: true,
                 onSuccess: () => this.isOpen = false,
                 onError: () => this.showValidationErrors = true,
                 onFinish: () => this.form.reset()
@@ -130,6 +131,7 @@ export default {
         },
         edit() {
             this.form.put(this.route('periods.update', this.id), {
+                preserveScroll: true,
                 onSuccess: () => {
                     this.isOpen = false
                     this.form.reset()
@@ -139,6 +141,7 @@ export default {
         },
         remove() {
             this.$inertia.delete(this.route('periods.destroy', this.id), {
+                preserveScroll: true,
                 onSuccess: () => this.isOpen = false
             })
         }
