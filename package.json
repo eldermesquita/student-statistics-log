@@ -28,6 +28,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "nprogress": "^0.2.0",
         "vuetify": "^2.4.9"
     }
 }
