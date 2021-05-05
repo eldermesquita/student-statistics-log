@@ -7,7 +7,7 @@ use App\Http\Requests\Users\CreateRequest;
 use App\Http\Resources\Users\UserCollection;
 use App\Http\Resources\Users\WorkersCollection;
 use App\Models\User;
-use App\Services\UserService;
+use App\ManageServices\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;

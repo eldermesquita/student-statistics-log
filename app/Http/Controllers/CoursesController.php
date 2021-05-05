@@ -7,7 +7,7 @@ use App\Http\Requests\Courses\UpdateRequest;
 use App\Http\Resources\Courses\CourseCollection;
 use App\Http\Resources\Courses\CourseDetailResource;
 use App\Models\Course;
-use App\Services\CourseService;
+use App\ManageServices\CourseService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

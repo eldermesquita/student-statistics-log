@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\ChangeRoleRequest;
 use App\Models\User;
-use App\Services\UserService;
+use App\ManageServices\UserService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;

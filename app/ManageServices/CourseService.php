@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\ManageServices;
 
 use App\Http\Requests\Courses\CreateRequest;
 use App\Http\Requests\Courses\UpdateRequest;

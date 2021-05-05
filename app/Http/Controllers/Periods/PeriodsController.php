@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Periods\ManageRequest;
 use App\Http\Resources\Periods\PeriodCollection;
 use App\Models\Period;
-use App\Services\PeriodService;
+use App\ManageServices\PeriodService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

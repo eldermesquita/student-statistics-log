@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\ManageServices;
 
 use App\Http\Requests\Periods\ManageRequest;
 use App\Models\Period;

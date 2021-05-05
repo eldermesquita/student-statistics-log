@@ -7,7 +7,7 @@ use App\Http\Requests\Students\ManageRequest;
 use App\Http\Resources\Students\StudentCollection;
 use App\Models\Classroom;
 use App\Models\Student;
-use App\Services\StudentService;
+use App\ManageServices\StudentService;
 use Inertia\Inertia;
 
 class StudentsController extends Controller

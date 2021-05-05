@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Tests\CreateRequest;
 use App\Http\Requests\Tests\UpdateRequest;
 use App\Models\Test;
-use App\Services\TestService;
+use App\ManageServices\TestService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
