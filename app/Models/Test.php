@@ -10,7 +10,7 @@ class Test extends Model
     use HasFactory;
 
     protected $fillable = [
-        'number_classroom_archived', 'postfix_classroom_archived', 'title', 'description', 'passed_at'
+        'title', 'description', 'passed_at'
     ];
 
     protected $casts = [
@@ -25,5 +25,15 @@ class Test extends Model
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
+    }
+
+    public function period()
+    {
+        return $this->belongsTo(Period::class, 'period_id', 'id');
     }
 }

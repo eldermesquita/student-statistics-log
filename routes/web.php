@@ -4,7 +4,7 @@ use App\Http\Controllers\Classrooms\StudentsController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\Periods\PeriodsController;
 use App\Http\Controllers\ClassroomsController;
-use App\Http\Controllers\Tests\TestsController;
+use App\Http\Controllers\TestsController;
 use App\Http\Controllers\Users\ChangeRoleController;
 use App\Http\Controllers\Users\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +20,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         'create', 'store', 'edit', 'update', 'destroy'
     ])->middleware('can:manage-courses');
 
+    Route::get('courses/{course}/teachers', [CoursesController::class, 'teachers'])->name('courses.teachers');
+
     Route::resource('periods', PeriodsController::class);
     Route::put('/periods/{period}/activate', [PeriodsController::class, 'activate'])->name('periods.activate');
 
@@ -33,7 +35,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/students/import', [StudentsController::class, 'storeImport'])->name('students.import.store');
     Route::get('/students/import', [StudentsController::class, 'import'])->name('students.import');
 
-    Route::resource('tests', TestsController::class)->only('index', 'show');
+    Route::resource('tests', TestsController::class);
 
     Route::resource('tests', TestsController::class)->only([
         'create', 'store', 'edit', 'update', 'destroy'

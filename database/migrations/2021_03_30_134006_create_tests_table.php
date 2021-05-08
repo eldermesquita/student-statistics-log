@@ -13,6 +13,7 @@ class CreateTestsTable extends Migration
             $table->foreignId('teacher_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete();
             $table->foreignId('classroom_id')->nullable()->constrained('classrooms')->nullOnDelete();
+            $table->foreignId('period_id')->constrained('periods')->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('passed_at');

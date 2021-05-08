@@ -1,17 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Tests;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Tests\CreateRequest;
 use App\Http\Requests\Tests\UpdateRequest;
+use App\Http\Resources\Classrooms\ClassroomResource;
+use App\Http\Resources\Courses\CourseResource;
+use App\Http\Resources\Periods\PeriodResource;
+use App\Http\Resources\Tests\TestResource;
+use App\Models\Classroom;
+use App\Models\Course;
+use App\Models\Period;
 use App\Models\Test;
 use App\ManageServices\TestService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
-use function __;
-use function redirect;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TestsController extends Controller
 {
@@ -30,19 +37,39 @@ class TestsController extends Controller
      */
     public function index()
     {
-        $tests = Test::all();
+        $period = Period::active()->first();
+
+        $tests = QueryBuilder::for(Test::class)->where('tests.period_id', '=', $period->id)->with(['classroom', 'teacher', 'course'])
+            ->allowedFilters([
+                AllowedFilter::exact('classroomNumber', 'classroom.number'),
+                AllowedFilter::exact('classroomPostfix', 'classroom.postfix'),
+                AllowedFilter::exact('course_id'),
+                AllowedFilter::exact('teacher_id')
+            ])->paginate(10);
 
         return Inertia::render('Tests/Index', [
-            'tests' => $tests
+            'params' => Request::all([
+                'filter.classroomNumber',
+                'filter.classroomPostfix',
+                'filter.course_id',
+                'filter.teacher_id',
+            ]),
+            'tests' => TestResource::collection($tests),
+            'courses' => CourseResource::collection(Course::all()),
         ]);
     }
 
-    /**
-     * @return Response
-     */
     public function create()
     {
-        //
+        $period = Period::active()->first();
+
+        return Inertia::render('Tests/Create', [
+            'period' => new PeriodResource($period),
+            'courses' => CourseResource::collection(Course::all()),
+            'classrooms' => ClassroomResource::collection(
+                Classroom::wherePeriodId($period->id)->orderByDesc('number')->get()->all()
+            )
+        ]);
     }
 
     /**

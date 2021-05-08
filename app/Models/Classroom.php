@@ -16,4 +16,9 @@ class Classroom extends Model
     {
         return $this->hasMany(Student::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->number . $this->postfix;
+    }
 }

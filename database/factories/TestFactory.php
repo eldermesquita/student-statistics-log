@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Classroom;
 use App\Models\Course;
+use App\Models\Period;
 use App\Models\Test;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,6 +25,7 @@ class TestFactory extends Factory
             'teacher_id' => User::factory()->admin(),
             'course_id' => Course::factory(),
             'classroom_id' => Classroom::factory(),
+            'period_id' => Period::factory(),
             'title' => $this->faker->word,
             'description' => $this->faker->text,
             'passed_at' => Carbon::now(),

@@ -10,14 +10,15 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'teacher' => [
+            'teacher_id' => [
                 'required',
                 'integer',
                 new UserSchoolWorkerRule()
             ],
-            'course' => 'integer|required',
-            'classroom' => 'integer|required',
-            'title' => 'string|required|max:255',
+            'course_id' => 'required|integer',
+            'classroom_id' => 'required|integer',
+            'period_id' => 'required|integer',
+            'title' => 'required|string|max:255',
             'description' => 'string|nullable',
             'passed_at' => 'date|required',
         ];
