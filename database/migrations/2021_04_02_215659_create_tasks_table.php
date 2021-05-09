@@ -13,7 +13,6 @@ class CreateTasksTable extends Migration
             $table->foreignId('test_id')->constrained('tests')->onDelete('cascade');
             $table->integer('number');
             $table->string('postfix')->nullable();
-            $table->integer('sort');
             $table->integer('min_score');
             $table->integer('max_score');
             $table->timestamps();

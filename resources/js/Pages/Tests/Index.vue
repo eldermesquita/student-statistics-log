@@ -80,15 +80,45 @@
                         </v-btn>
                     </span>
                 </template>
+                <template v-slot:item.actions="{ item }">
+                    <v-icon
+                        small
+                        class="mr-2"
+                        @click="$inertia.visit(route('tests.edit', item.id))"
+                    >
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon
+                        small
+                        @click="remove(item.id)"
+                    >
+                        mdi-delete
+                    </v-icon>
+                </template>
+                <template v-slot:item.description="{ item }">
+                    <span>{{ item.description }}</span>
+                </template>
+                <template v-slot:item.fill="{ item }">
+                    <v-btn
+                        small
+                        class="primary"
+                        @click="$inertia.visit(route('tasks.index', item.id))"
+                    >
+                        Заполн.
+                    </v-btn>
+                </template>
             </v-data-table>
         </v-card>
+        <DeleteDialog></DeleteDialog>
     </app-layout>
 </template>
 
 <script>
 
 import AppLayout from '@/Layouts/AppLayout'
-import Search from "./Search";
+import Search from "./Forms/Search";
+import { EventBus } from "../../event-bus";
+import DeleteDialog from "./Forms/DeleteDialog";
 
 export default {
     props: [
@@ -99,6 +129,7 @@ export default {
     components: {
         Search,
         AppLayout,
+        DeleteDialog
     },
     data () {
         return {
@@ -130,6 +161,14 @@ export default {
                     text: 'Учитель',
                     value: 'teacher.abbreviated_name',
                 },
+                {
+                    text: 'Действия',
+                    value: 'actions',
+                },
+                {
+                    text: 'Заполнение',
+                    value: 'fill'
+                }
             ]
         }
     },
@@ -140,6 +179,9 @@ export default {
                 onSuccess: () => this.loading = false
             })
         },
+        remove(id) {
+            EventBus.$emit('openDeleteTestDialog', id)
+        }
     }
 }
 </script>

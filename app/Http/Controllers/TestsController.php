@@ -93,13 +93,15 @@ class TestsController extends Controller
         ]);
     }
 
-    /**
-     * @param Test $test
-     * @return Response
-     */
     public function edit(Test $test)
     {
-        //
+        return Inertia::render('Tests/Edit', [
+            'courses' => CourseResource::collection(Course::all()),
+            'classrooms' => ClassroomResource::collection(
+                Classroom::wherePeriodId($test->period_id)->orderByDesc('number')->get()->all()
+            ),
+            'test' => new TestResource($test)
+        ]);
     }
 
     /**
@@ -109,7 +111,7 @@ class TestsController extends Controller
      */
     public function update(UpdateRequest $request, Test $test): RedirectResponse
     {
-        $this->service->edit($test->id, $request);
+        $this->service->edit($test, $request);
         return redirect()->route('tests.index')->with('success', __('messages.test.updated'));
     }
 
@@ -119,7 +121,7 @@ class TestsController extends Controller
      */
     public function destroy(Test $test): RedirectResponse
     {
-        $this->service->remove($test->id);
-        return redirect()->route('tests.index')->with('success', __('messages.test.removed'));
+        $this->service->remove($test);
+        return redirect()->back()->with('success', __('messages.test.removed'));
     }
 }

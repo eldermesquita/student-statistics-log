@@ -4,6 +4,7 @@ use App\Http\Controllers\Classrooms\StudentsController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\Periods\PeriodsController;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\Tests\TasksController;
 use App\Http\Controllers\TestsController;
 use App\Http\Controllers\Users\ChangeRoleController;
 use App\Http\Controllers\Users\UsersController;
@@ -40,6 +41,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('tests', TestsController::class)->only([
         'create', 'store', 'edit', 'update', 'destroy'
     ])->middleware('can:manage-tests');
+
+    Route::get('tests/{test}/tasks', [TasksController::class, 'index'])->name('tasks.index');
 
     Route::resource('users', UsersController::class)->only('index', 'create', 'store');
     Route::resource('users', UsersController::class)->only('create', 'store')->middleware('can:manage-users');

@@ -37,13 +37,21 @@ class TestService
         return $test;
     }
 
-    public function edit(int $id, UpdateRequest $request): void
+    public function edit(Test $test, UpdateRequest $request): void
     {
+        $teacher = User::findOrFail($request['teacher_id']);
+        $course = Course::findOrFail($request['course_id']);
+        $classroom = Classroom::findOrFail($request['classroom_id']);
+
+        $test->course()->associate($course);
+        $test->teacher()->associate($teacher);
+        $test->classroom()->associate($classroom);
+
+        $test->update($request->only('title', 'description', 'passed_at'));
     }
 
-    public function remove(int $id): void
+    public function remove(Test $test): void
     {
-        $test = $this->getModel($id);
         $test->delete();
     }
 }

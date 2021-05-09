@@ -3,19 +3,29 @@
 namespace App\Http\Controllers\Tests;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Students\StudentResource;
+use App\Http\Resources\Tests\TaskResource;
+use App\Models\Student;
 use App\Models\Task;
+use App\Models\Test;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TasksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Test $test)
     {
-        //
+        $tasks = $test->tasks;
+        $taskIds = $tasks->pluck('id');
+
+        $students = Student::whereClassroomId($test->classroom_id)->with(['grades' => function ($q) use ($taskIds) {
+            $q->whereIn('task_id', $taskIds);
+        }])->get();
+
+        return Inertia::render('Tasks/Index', [
+            'tasks' => TaskResource::collection($test->tasks),
+            'students' => StudentResource::collection($students)
+        ]);
     }
 
     /**

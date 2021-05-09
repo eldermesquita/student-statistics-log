@@ -15,7 +15,7 @@ class CreateStudentGradeTable extends Migration
     {
         Schema::create('student_grade', function (Blueprint $table) {
             $table->foreignId('task_id')->constrained('tasks')->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained('tasks')->cascadeOnDelete();
+            $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
             $table->integer('value');
             $table->primary(['task_id', 'student_id']);
         });

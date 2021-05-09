@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Tests;
 
+use App\Rules\UserSchoolWorkerRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -9,7 +10,14 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string|required|max:255',
+            'teacher_id' => [
+                'required',
+                'integer',
+                new UserSchoolWorkerRule()
+            ],
+            'course_id' => 'required|integer',
+            'classroom_id' => 'required|integer',
+            'title' => 'required|string|max:255',
             'description' => 'string|nullable',
             'passed_at' => 'date|required',
         ];

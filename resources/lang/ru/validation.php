@@ -155,7 +155,10 @@ return [
         'status'                => 'Статус',
         'number'                => 'Номер',
         'postfix'               => 'Постфикс',
-        'file'                  => 'Файл'
+        'file'                  => 'Файл',
+        'teacher_id'            => 'Учитель',
+        'classroom_id'          => 'Класс',
+        'course_id'             => 'Предмет'
     ],
     'role_not_exist' => 'Роль не существует.',
     'status_not_exist' => 'Статус не существует.'

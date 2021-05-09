@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Grade extends Model
 {
-    protected $table = 'student_grade';
-
     use HasFactory;
+
+    const STATUS_UNTOUCHED = 'untouched';
+    const STATUS_ABSENT = 'absent';
+
+    protected $table = 'student_grade';
 }

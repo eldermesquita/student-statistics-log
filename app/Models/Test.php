@@ -36,4 +36,9 @@ class Test extends Model
     {
         return $this->belongsTo(Period::class, 'period_id', 'id');
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

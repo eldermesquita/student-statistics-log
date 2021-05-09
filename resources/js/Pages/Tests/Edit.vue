@@ -8,7 +8,7 @@
             </v-breadcrumbs-item>
             <v-breadcrumbs-divider>/</v-breadcrumbs-divider>
             <v-breadcrumbs-item disabled>
-                Создание АКР
+                Редактирование АКР
             </v-breadcrumbs-item>
         </template>
         <v-card class="mb-5">
@@ -83,8 +83,8 @@
                 ></v-textarea>
                 <v-date-picker
                     v-model="form.passed_at"
-                    locale="ru-RU"
                     :show-current="false"
+                    locale="ru-RU"
                 >
                 </v-date-picker>
                 <v-btn
@@ -92,7 +92,7 @@
                     @click="submit"
                     :loading="form.processing"
                 >
-                    Создать
+                    Обновить
                 </v-btn>
             </v-card-text>
         </v-card>
@@ -137,9 +137,9 @@ import AppLayout from '@/Layouts/AppLayout'
 
 export default {
     props: [
-        'period',
         'courses',
-        'classrooms'
+        'classrooms',
+        'test'
     ],
     components: {
         AppLayout,
@@ -152,18 +152,23 @@ export default {
             isOpenDialogClassrooms: false,
             form: this.$inertia.form({
                 teacher_id: null,
-                classroom_id: null,
-                course_id: null,
-                period_id: this.period.data.id,
-                title: null,
-                description: null,
-                passed_at: null
+                classroom_id: this.test.data.classroom.id,
+                course_id: this.courses.data.find(course => course.id === Number(this.test.data.course.id)) || null,
+                title: this.test.data.title,
+                description: this.test.data.description,
+                passed_at: this.test.data.passed_at
             })
         }
     },
     methods: {
         submit() {
-            this.form.post(this.route('tests.store'))
+            this.form
+                .transform(data => ({
+                    ... data,
+                    teacher_id: this.getSelectValue(this.form.teacher_id),
+                    course_id: this.getSelectValue(this.form.course_id)
+                }))
+                .put(this.route('tests.update', this.test.data.id))
         },
         clearCourse() {
             this.teachers = []
@@ -171,6 +176,9 @@ export default {
         },
         onChangeCourse() {
             this.form.teacher_id = null
+            this.loadTeachers()
+        },
+        loadTeachers() {
             if (this.form.course_id === null) {
                 return
             }
@@ -184,12 +192,19 @@ export default {
                 this.isCourseSelectDisabled = false
                 this.isCourseSelectLoading = false
             })
-        }
+        },
+        getSelectValue(value) {
+            return typeof value === 'object' && value !== null ? value.id : value
+        },
     },
     computed: {
         selectedClassroom () {
             return this.classrooms.data.find(classroom => classroom.id === this.form.classroom_id) || ''
         }
+    },
+    async mounted() {
+        await this.loadTeachers()
+        this.form.teacher_id = this.teachers.find(teacher => teacher.id === Number(this.test.data.teacher.id))
     }
 }
 </script>
