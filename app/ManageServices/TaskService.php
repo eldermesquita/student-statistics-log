@@ -4,29 +4,45 @@
 namespace App\ManageServices;
 
 
-use App\Http\Requests\TaskRequest;
-use App\Models\Course;
+use App\Http\Requests\Tasks\ManageRequest;
+use App\Models\Classroom;
+use App\Models\Grade;
+use App\Models\Student;
 use App\Models\Task;
+use App\Models\Test;
 use Illuminate\Support\Facades\DB;
 
 class TaskService
 {
-    public function createFromArray(int $test, TaskRequest $request): bool
+    public function create(Test $test, ManageRequest $request)
     {
-        $test = Course::findOrFail($test);
+        DB::transaction(function () use ($test, $request) {
+            $classroom = Classroom::findOrFail($test->classroom_id);
 
-        $tasks = [];
-        foreach ($request['tasks'] as $task) {
-            array_push($tasks, [
-                'test_id' => $test->id,
-                'number' => $task['number'],
-                'postfix' => $task['postfix'],
-                'sort' => $task['sort'],
-                'min_score' => $task['min_score'],
-                'max_score' => $task['max_score']
+            $task = Task::make([
+                'number' => $request['number'],
+                'postfix' => $request['postfix'],
+                'min_score' => $request['min_score'],
+                'max_score' => $request['max_score']
             ]);
-        }
 
-        return Task::insert($tasks);
+            $task->test()->associate($test);
+
+            $task->saveOrFail();
+
+            $classroom->students()->each(function (Student $student) use ($task) {
+                $student->grades()->create([
+                    'task_id' => $task->id,
+                    'value' => null,
+                    'status' => Grade::STATUS_UNTOUCHED
+                ]);
+            });
+            return $task;
+        });
+    }
+
+    public function remove(Task $task)
+    {
+        $task->delete();
     }
 }

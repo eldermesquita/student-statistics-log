@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Tests;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Tasks\ManageRequest;
 use App\Http\Resources\Students\StudentResource;
 use App\Http\Resources\Tests\TaskResource;
+use App\Http\Resources\Tests\TestResource;
+use App\ManageServices\TaskService;
 use App\Models\Student;
 use App\Models\Task;
 use App\Models\Test;
@@ -13,84 +16,57 @@ use Inertia\Inertia;
 
 class TasksController extends Controller
 {
+    /**
+     * @var TaskService
+     */
+    private $service;
+
+    public function __construct(TaskService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index(Test $test)
     {
-        $tasks = $test->tasks;
+        $tasks = $test->tasks()->orderBy('sort')->get();
         $taskIds = $tasks->pluck('id');
 
         $students = Student::whereClassroomId($test->classroom_id)->with(['grades' => function ($q) use ($taskIds) {
-            $q->whereIn('task_id', $taskIds);
+            return $q->whereIn('task_id', $taskIds)->join('tasks', 'task_id', '=', 'tasks.id')->orderBy('sort');
         }])->get();
 
         return Inertia::render('Tasks/Index', [
-            'tasks' => TaskResource::collection($test->tasks),
+            'test' => new TestResource($test),
+            'tasks' => TaskResource::collection($tasks),
             'students' => StudentResource::collection($students)
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Test $test, ManageRequest $request)
     {
-        //
+        $this->service->create($test, $request);
+
+        return redirect()->back()->with('success', __('messages.task.create'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function up(Task $task)
     {
-        //
+        $task->moveOrderUp();
+
+        return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Task $task)
+    public function down(Task $task)
     {
-        //
+        $task->moveOrderDown();
+
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Task $task)
     {
-        //
+        $this->service->remove($task);
+
+        return redirect()->back();
     }
 }

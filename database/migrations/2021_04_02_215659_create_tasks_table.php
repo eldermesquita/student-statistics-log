@@ -15,6 +15,7 @@ class CreateTasksTable extends Migration
             $table->string('postfix')->nullable();
             $table->integer('min_score');
             $table->integer('max_score');
+            $table->integer('sort');
             $table->timestamps();
         });
     }

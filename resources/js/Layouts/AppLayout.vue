@@ -85,6 +85,18 @@
                         <v-list-item-title>АКР</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item
+                    link
+                    @click="$inertia.visit(route('tests.index'))"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-file-document-multiple-outline</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>Сравнение результатов</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-navigation-drawer>
 

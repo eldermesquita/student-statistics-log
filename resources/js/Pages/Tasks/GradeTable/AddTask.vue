@@ -25,24 +25,44 @@
                 </v-icon>
                 <v-card-text>
                     <v-form>
-                        <v-text-field
-                            label="Номер"
-                            type="number"
-                        >
-                        </v-text-field>
+                        <v-row>
+                            <v-col>
+                                <v-text-field
+                                    label="Номер"
+                                    type="number"
+                                    v-model="form.number"
+                                    :error-messages="form.errors.number"
+                                >
+                                </v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-text-field
+                                    label="Постфикс"
+                                    type="postfix"
+                                    v-model="form.postfix"
+                                    :error-messages="form.errors.postfix"
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
                         <v-text-field
                             label="Макс. знач."
                             type="number"
+                            v-model="form.max_score"
+                            :error-messages="form.errors.max_score"
                         >
                         </v-text-field>
                         <v-text-field
                             label="Мин. знач"
                             type="number"
+                            v-model="form.min_score"
+                            :error-messages="form.errors.min_score"
                         >
                         </v-text-field>
                         <v-btn
                             small
                             class="primary"
+                            @click="addTask"
                         >
                             Создать
                         </v-btn>
@@ -55,14 +75,34 @@
 
 <script>
 export default {
+    props: {
+        lastNumber: {
+            type: Number,
+            default: 0
+        },
+        testId: Number
+    },
     data () {
         return {
-            isOpen: false
+            isOpen: false,
+            form: this.$inertia.form({
+                number: this.lastNumber + 1,
+                postfix: null,
+                max_score: null,
+                min_score: 0
+            })
         }
     },
     methods: {
         close () {
             this.isOpen = false
+        },
+        addTask () {
+            this.form.post(this.route('tasks.store', this.testId), {
+                onSuccess: () => {
+                    this.isOpen = false
+                }
+            })
         }
     }
 }
@@ -75,8 +115,10 @@ export default {
     .add-task__form {
         position: absolute;
         top: 0;
+        right: 0;
         min-width: 240px;
         max-width: 240px;
+        z-index: 999;
     }
     .add-task__close-btn {
         position: absolute;

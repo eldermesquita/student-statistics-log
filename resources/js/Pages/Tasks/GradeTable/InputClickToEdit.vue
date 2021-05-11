@@ -5,12 +5,14 @@
             :value="value"
             @input="$emit('input', $event.target.value)"
             @keyup.enter="save($event.target.value)"
-            :class="inputClass"
+            class="grade-input"
             autofocus
+            v-click-outside="edit = false"
         />
-        <span :class="textClass" v-else @click="edit = true">
+        <span v-else @click="edit = true" class="grade-text">
             {{ value }}
         </span>
+        <v-text-field></v-text-field>
     </div>
 </template>
 
@@ -36,5 +38,16 @@ export default {
 </script>
 
 <style scoped>
-
+    .grade-text {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+    }
+    .grade-input {
+        width: 100%;
+        outline: none;
+        border-top: 1px;
+        border-bottom: 1px;
+    }
 </style>

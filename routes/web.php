@@ -4,6 +4,7 @@ use App\Http\Controllers\Classrooms\StudentsController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\Periods\PeriodsController;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\Tests\GradesController;
 use App\Http\Controllers\Tests\TasksController;
 use App\Http\Controllers\TestsController;
 use App\Http\Controllers\Users\ChangeRoleController;
@@ -43,6 +44,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     ])->middleware('can:manage-tests');
 
     Route::get('tests/{test}/tasks', [TasksController::class, 'index'])->name('tasks.index');
+    Route::post('tests/{test}/tasks', [TasksController::class, 'store'])->name('tasks.store');
+    Route::put('tasks/{task}/up', [TasksController::class, 'up'])->name('tasks.up');
+    Route::put('tasks/{task}/down', [TasksController::class, 'down'])->name('tasks.down');
+    Route::delete('tasks/{task}', [TasksController::class, 'destroy'])->name('tasks.destroy');
+
+    Route::put('grades', [GradesController::class, 'update'])->name('grades.update');
 
     Route::resource('users', UsersController::class)->only('index', 'create', 'store');
     Route::resource('users', UsersController::class)->only('create', 'store')->middleware('can:manage-users');

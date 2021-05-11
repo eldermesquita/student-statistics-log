@@ -46,7 +46,7 @@
 
 import AppLayout from '@/Layouts/AppLayout'
 import Input from "../../Jetstream/Input";
-import InputClickToEdit from "./Particals/InputClickToEdit";
+import InputClickToEdit from "../Tasks/GradeTable/InputClickToEdit";
 
 export default {
     props: [
