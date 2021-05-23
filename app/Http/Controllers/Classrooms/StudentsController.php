@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Students\ImportRequest;
 use App\Http\Requests\Students\ManageRequest;
 use App\Http\Requests\Students\TransferRequest;
-use App\Http\Resources\Students\StudentCollection;
+use App\Http\Resources\Students\StudentResource;
 use App\Imports\ClassroomStudentsImport;
 use App\Models\Classroom;
 use App\Models\Student;
@@ -28,7 +28,7 @@ class StudentsController extends Controller
         $this->service = $service;
     }
 
-    public function import()
+    public function import(): Response
     {
         return Inertia::render('Classrooms/Import');
     }
@@ -51,7 +51,7 @@ class StudentsController extends Controller
         return Inertia::render('Classrooms/Students/Index', [
             'classroom' => $classroom,
             'classrooms' => $classrooms,
-            'students' => new StudentCollection($students)
+            'students' => StudentResource::collection($students)
         ]);
     }
 

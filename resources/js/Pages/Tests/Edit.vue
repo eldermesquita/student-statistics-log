@@ -76,7 +76,7 @@
                     <v-chip>{{ selectedClassroom.full_name }}</v-chip>
                 </div>
                 <v-textarea
-                    v-model="this.form.description"
+                    v-model="form.description"
                     :error-messages="form.errors.description"
                     full-width
                     label="Описание работы"

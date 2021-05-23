@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateRequest;
-use App\Http\Resources\Users\UserCollection;
-use App\Http\Resources\Users\WorkersCollection;
+use App\Http\Resources\Users\UserResource;
 use App\Models\User;
 use App\ManageServices\UserService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -20,14 +20,14 @@ class UsersController extends Controller
     /**
      * @var UserService
      */
-    private $service;
+    private UserService $service;
 
     public function __construct(UserService $service)
     {
         $this->service = $service;
     }
 
-    public function index()
+    public function index(): Response
     {
         $users = QueryBuilder::for(User::class)
             ->with('session')
@@ -43,9 +43,22 @@ class UsersController extends Controller
             'can' => [
                 'manageUsers' => Auth::user()->can('manage-users')
             ],
-            'users' => new UserCollection($users),
+            'users' => UserResource::collection($users),
             'roles' => User::getRoles(),
         ]);
+    }
+
+    public function workers(): AnonymousResourceCollection
+    {
+        $users = QueryBuilder::for(User::class)
+            ->latest()
+            ->allowedFilters(
+                AllowedFilter::scope('full_name'),
+            )
+            ->workers()
+            ->get();
+
+        return UserResource::collection($users);
     }
 
     public function create(): Response
@@ -59,18 +72,5 @@ class UsersController extends Controller
     {
         return $this->service->createByAdmin($request);
 
-    }
-
-    public function workers()
-    {
-        $users = QueryBuilder::for(User::class)
-            ->latest()
-            ->allowedFilters(
-                AllowedFilter::scope('full_name'),
-            )
-            ->workers()
-            ->get();
-
-        return new WorkersCollection($users);
     }
 }

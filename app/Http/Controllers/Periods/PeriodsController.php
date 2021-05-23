@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Periods;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Periods\ManageRequest;
-use App\Http\Resources\Periods\PeriodCollection;
+use App\Http\Resources\Periods\PeriodResource;
 use App\Models\Period;
 use App\ManageServices\PeriodService;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PeriodsController extends Controller
 {
-    private $service;
+    private PeriodService $service;
 
     public function __construct(PeriodService $service)
     {
@@ -27,7 +26,7 @@ class PeriodsController extends Controller
         $periods = Period::orderByDesc('started_at')->paginate(10);
 
         return Inertia::render('Periods/Index', [
-            'periods' => new PeriodCollection($periods),
+            'periods' => PeriodResource::collection($periods),
             'statuses' => Period::getStatuses()
         ]);
     }

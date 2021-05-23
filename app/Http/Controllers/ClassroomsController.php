@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Classrooms\ManageRequest;
-use App\Http\Resources\Classrooms\ClassroomCollection;
+use App\Http\Resources\Classrooms\ClassroomResource;
 use App\ManageServices\ClassroomService;
 use App\Models\Classroom;
 use App\Models\Period;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -36,7 +35,7 @@ class ClassroomsController extends Controller
         $classrooms = $period->classrooms()->orderByDesc('number')->paginate(10);
 
         return Inertia::render('Classrooms/Index', [
-            'classrooms' => new ClassroomCollection($classrooms),
+            'classrooms' => ClassroomResource::collection($classrooms),
             'period' => $period
         ]);
     }

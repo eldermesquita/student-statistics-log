@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Courses\CreateRequest;
 use App\Http\Requests\Courses\UpdateRequest;
-use App\Http\Resources\Courses\CourseCollection;
 use App\Http\Resources\Courses\CourseDetailResource;
+use App\Http\Resources\Courses\CourseResource;
 use App\Models\Course;
 use App\ManageServices\CourseService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +37,7 @@ class CoursesController extends Controller
             'can' => [
                 'manageCourses' => Auth::user()->can('manage-courses')
             ],
-            'courses' => new CourseCollection($courses)
+            'courses' => CourseResource::collection($courses)
         ]);
     }
 
